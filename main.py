@@ -22,13 +22,12 @@ if not api_key:
 else:
     genai.configure(api_key=api_key)
 try:
-    print("--- 사용 가능한 모델 목록 시작 ---")
+    print("--- 실제 사용 가능한 모델 리스트 확인 ---")
     for m in genai.list_models():
         if 'generateContent' in m.supported_generation_methods:
-            print(f"사용 가능 모델: {m.name}")
-    print("--- 사용 가능한 모델 목록 끝 ---")
+            print(f"✅ 사용 가능 모델명: {m.name}")
 except Exception as e:
-    print(f"모델 목록 확인 실패: {e}")
+    print(f"❌ 모델 리스트를 불러오지 못했습니다: {e}")
 model = genai.GenerativeModel('gemini-1.5-flash-001')
 
 # 안내문 원본 텍스트
