@@ -15,8 +15,13 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Gemini 설정
-genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+# Gemini 설정 (환경 변수 확인 로직 강화)
+api_key = os.environ.get("GEMINI_API_KEY")
+if not api_key:
+    print("에러: GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.")
+else:
+    genai.configure(api_key=api_key)
+
 model = genai.GenerativeModel('gemini-1.5-flash')
 
 # 안내문 원본 텍스트
@@ -35,6 +40,9 @@ class ChatRequest(BaseModel):
 
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
+    if not api_key:
+        return {"response": "서버 설정 오류: API 키가 등록되지 않았습니다. Render 설정을 확인해 주세요."}
+    
     try:
         prompt = f"""
         당신은 (주)신우금속의 방화문 시공 전문 AI 도우미입니다.
@@ -49,10 +57,12 @@ async def chat(request: ChatRequest):
 
         사용자 질문: {request.message}
         """
-        response = model.generate_content(prompt)
+        # 비동기 방식으로 호출하여 안정성 강화
+        response = await model.generate_content_async(prompt)
         return {"response": response.text}
     except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
+        print(f"AI 호출 중 오류 발생: {str(e)}")
+        return {"response": f"AI 서비스 연결 중 오류가 발생했습니다: {str(e)}"}
 
 @app.get("/")
 async def read_index():
@@ -64,5 +74,5 @@ async def get_logo():
 
 if __name__ == "__main__":
     import uvicorn
-    port = int(os.environ.get("PORT", 8080))
+    port = int(os.environ.get("PORT", 10000))
     uvicorn.run(app, host="0.0.0.0", port=port)
