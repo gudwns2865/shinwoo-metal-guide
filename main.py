@@ -21,7 +21,14 @@ if not api_key:
     print("에러: GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.")
 else:
     genai.configure(api_key=api_key)
-
+try:
+    print("--- 사용 가능한 모델 목록 시작 ---")
+    for m in genai.list_models():
+        if 'generateContent' in m.supported_generation_methods:
+            print(f"사용 가능 모델: {m.name}")
+    print("--- 사용 가능한 모델 목록 끝 ---")
+except Exception as e:
+    print(f"모델 목록 확인 실패: {e}")
 model = genai.GenerativeModel('gemini-1.5-flash-latest')
 
 # 안내문 원본 텍스트
