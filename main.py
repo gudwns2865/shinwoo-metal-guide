@@ -2,7 +2,6 @@ import os
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from openai import OpenAI
 
@@ -16,7 +15,8 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-client = OpenAI()
+# OpenAI 클라이언트 설정 (환경 변수 사용)
+client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
 # 안내문 원본 텍스트 (AI 참고용)
 GUIDE_CONTENT = """
@@ -56,11 +56,9 @@ class ChatRequest(BaseModel):
 async def chat(request: ChatRequest):
     try:
         user_message = request.message
-        
         system_prompt = f"""
         당신은 (주)신우금속의 방화문 시공 전문 AI 도우미입니다. 
         사용자의 질문에 대해 다음 지침을 엄격히 따르세요:
-
         1. **안내문 우선 답변**: 아래 제공된 [안내문 내용]에 해당 질문에 대한 답이 있다면, 반드시 이 내용을 바탕으로 먼저 답변하세요.
         2. **인터넷 검색 활용**: 만약 질문이 [안내문 내용]에 없거나, 더 광범위한 방화문 관련 법령, 최신 기술 기준에 대한 것이라면 당신의 지식과 실시간 검색 결과를 바탕으로 답변하세요.
         3. **가독성 극대화**: 답변은 전문적이고 친절하게 한국어로 작성합니다. 
@@ -72,7 +70,6 @@ async def chat(request: ChatRequest):
         [안내문 내용]
         {GUIDE_CONTENT}
         """
-        
         response = client.chat.completions.create(
             model="gpt-4.1-mini",
             messages=[
@@ -80,22 +77,20 @@ async def chat(request: ChatRequest):
                 {"role": "user", "content": user_message}
             ]
         )
-        
-        bot_response = response.choices[0].message.content
-        return {"response": bot_response}
-        
+        return {"response": response.choices[0].message.content}
     except Exception as e:
-        print(f"Error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 @app.get("/")
 async def read_index():
-    return FileResponse("/home/ubuntu/preview/index.html")
+    return FileResponse("index.html")
 
 @app.get("/logo.png")
 async def get_logo():
-    return FileResponse("/home/ubuntu/preview/new_logo.png")
+    return FileResponse("new_logo.png")
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8080)
+    # Render.com에서 지정해주는 포트를 사용하도록 설정
+    port = int(os.environ.get("PORT", 8080))
+    uvicorn.run(app, host="0.0.0.0", port=port)
