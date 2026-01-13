@@ -15,20 +15,38 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Gemini 설정 (환경 변수 확인 로직 강화)
+# 1. Gemini 설정 및 모델 자동 선택 로직
 api_key = os.environ.get("GEMINI_API_KEY")
+model = None
+
 if not api_key:
-    print("에러: GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.")
+    print("❌ 에러: GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.")
 else:
     genai.configure(api_key=api_key)
-try:
-    print("--- 실제 사용 가능한 모델 리스트 확인 ---")
-    for m in genai.list_models():
-        if 'generateContent' in m.supported_generation_methods:
-            print(f"✅ 사용 가능 모델명: {m.name}")
-except Exception as e:
-    print(f"❌ 모델 리스트를 불러오지 못했습니다: {e}")
-model = genai.GenerativeModel('gemini-1.5-flash-001')
+    try:
+        # 사용 가능한 모델 목록 가져오기
+        available_models = [
+            m.name for m in genai.list_models() 
+            if 'generateContent' in m.supported_generation_methods
+        ]
+        
+        if available_models:
+            # 우선순위: gemini-1.5-flash -> gemini-1.5-pro -> 리스트의 첫 번째 모델
+            selected_model_name = None
+            for target in ['models/gemini-1.5-flash', 'models/gemini-1.5-flash-latest', 'models/gemini-pro']:
+                if target in available_models:
+                    selected_model_name = target
+                    break
+            
+            if not selected_model_name:
+                selected_model_name = available_models[0]
+            
+            model = genai.GenerativeModel(selected_model_name)
+            print(f"✅ AI 모델 연결 성공: {selected_model_name}")
+        else:
+            print("❌ 에러: 사용 가능한 Gemini 모델이 없습니다.")
+    except Exception as e:
+        print(f"❌ 모델 초기화 중 오류 발생: {e}")
 
 # 안내문 원본 텍스트
 GUIDE_CONTENT = """
@@ -46,8 +64,11 @@ class ChatRequest(BaseModel):
 
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
+    # 2. 예외 처리 강화
     if not api_key:
-        return {"response": "서버 설정 오류: API 키가 등록되지 않았습니다. Render 설정을 확인해 주세요."}
+        return {"response": "서버 설정 오류: API 키가 등록되지 않았습니다."}
+    if not model:
+        return {"response": "AI 모델을 초기화할 수 없습니다. API 키 권한을 확인하세요."}
     
     try:
         prompt = f"""
@@ -63,12 +84,15 @@ async def chat(request: ChatRequest):
 
         사용자 질문: {request.message}
         """
-        # 비동기 방식으로 호출하여 안정성 강화
+        
+        # 비동기 호출
         response = await model.generate_content_async(prompt)
         return {"response": response.text}
+        
     except Exception as e:
         print(f"AI 호출 중 오류 발생: {str(e)}")
-        return {"response": f"AI 서비스 연결 중 오류가 발생했습니다: {str(e)}"}
+        # 에러 메시지가 너무 길 경우를 대비해 요약된 메시지 반환
+        return {"response": f"AI 서비스 연결 중 오류가 발생했습니다. (사유: {str(e)[:100]})"}
 
 @app.get("/")
 async def read_index():
@@ -76,6 +100,8 @@ async def read_index():
 
 @app.get("/logo.png")
 async def get_logo():
+    # 파일명 오타 방지를 위해 실제 존재하는 파일명으로 확인 필요 (new_logo.png vs logo.png)
+    # 기존 코드에서 new_logo.png를 반환하도록 되어 있어 유지합니다.
     return FileResponse("new_logo.png")
 
 if __name__ == "__main__":
