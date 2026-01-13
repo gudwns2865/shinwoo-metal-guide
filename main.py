@@ -29,7 +29,7 @@ try:
     print("--- 사용 가능한 모델 목록 끝 ---")
 except Exception as e:
     print(f"모델 목록 확인 실패: {e}")
-model = genai.GenerativeModel('gemini-1.5-flash-latest')
+model = genai.GenerativeModel('gemini-1.5-flash-001')
 
 # 안내문 원본 텍스트
 GUIDE_CONTENT = """
