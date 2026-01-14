@@ -231,10 +231,37 @@
     </div>
 
     <script>
+        // FAQ 즉각 응답 데이터
+        const faqData = {
+            "손잡이 높이 기준": "방화문 손잡이 설치 높이는 <strong>바닥면으로부터 800mm ~ 1,050mm</strong> 사이입니다. (장애인 편의시설은 800~900mm 준수 필수)",
+            "장애인 유효폭": "장애인 편의시설 현장은 반드시 <strong>유효폭 900mm 이상</strong>을 확보해야 합니다. 이는 문틀 사이즈가 아닌, 문을 90도로 열었을 때의 순수 통과 폭을 의미합니다.",
+            "인정서 필요 서류": "인정서 발급을 위해서는 <strong>1. 품질확인 점검표(서명 필수), 2. 시공 사진(내외 전경 및 고정부위), 3. 전액 입금 확인</strong>이 모두 완료되어야 합니다.",
+            "시공 주의사항": "인정 시 포함된 <strong>정품 하드웨어를 임의로 변경하거나 현장에서 타공, 절단 가공을 하는 것은 엄격히 금지</strong>됩니다. 위반 시 인정서 발급이 불가합니다."
+        };
+
+        // FAQ 전용 처리 함수
         function askFAQ(question) {
-            const input = document.getElementById('chatbot-input');
-            input.value = question;
-            document.getElementById('chatbot-send').click();
+            const messagesContainer = document.getElementById('chatbot-messages');
+            
+            // 1. 사용자 질문 즉시 추가
+            const uMsg = document.createElement('div');
+            uMsg.className = 'message user-message';
+            uMsg.innerHTML = question;
+            messagesContainer.appendChild(uMsg);
+
+            // 2. 고정 답변 확인
+            if(faqData[question]) {
+                const bMsg = document.createElement('div');
+                bMsg.className = 'message bot-message';
+                bMsg.innerHTML = faqData[question];
+                messagesContainer.appendChild(bMsg);
+                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+            } else {
+                // 고정 답변이 없는 경우에만 AI 서버 호출
+                const input = document.getElementById('chatbot-input');
+                input.value = question;
+                document.getElementById('chatbot-send').click();
+            }
         }
 
         document.addEventListener('DOMContentLoaded', function() {
@@ -252,14 +279,17 @@
                 const text = input.value.trim();
                 if(!text) return;
 
-                // 1. 사용자 메시지 표시
-                const uMsg = document.createElement('div');
-                uMsg.className = 'message user-message';
-                uMsg.innerHTML = text;
-                messagesContainer.appendChild(uMsg);
+                // 이미 askFAQ에서 사용자 메시지를 넣었는지 확인 (중복 방지)
+                const lastMsg = messagesContainer.lastElementChild;
+                if (!lastMsg || lastMsg.innerHTML !== text || !lastMsg.classList.contains('user-message')) {
+                    const uMsg = document.createElement('div');
+                    uMsg.className = 'message user-message';
+                    uMsg.innerHTML = text;
+                    messagesContainer.appendChild(uMsg);
+                }
+                
                 input.value = '';
                 
-                // 2. 입력 중 애니메이션 표시
                 const loadingMsg = document.createElement('div');
                 loadingMsg.className = 'message bot-message';
                 loadingMsg.id = 'temp-loading';
@@ -278,11 +308,9 @@
                     });
                     const data = await res.json();
                     
-                    // 3. 로딩 애니메이션 제거
                     const loader = document.getElementById('temp-loading');
                     if(loader) loader.remove();
 
-                    // 4. AI 답변 표시
                     const bMsg = document.createElement('div');
                     bMsg.className = 'message bot-message';
                     bMsg.innerHTML = data.response.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
@@ -294,7 +322,7 @@
                     
                     const eMsg = document.createElement('div');
                     eMsg.className = 'message bot-message';
-                    eMsg.innerText = "서버 연결에 실패했습니다. 다시 시도해 주세요.";
+                    eMsg.innerText = "현재 사용자가 많아 응답이 지연되고 있습니다. 10초만 기다렸다가 다시 질문해 주시겠어요?";
                     messagesContainer.appendChild(eMsg);
                 }
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
