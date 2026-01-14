@@ -17,16 +17,7 @@
             --warning-border: #ffcdd2;
         }
 
-        * {
-            box-sizing: border-box;
-        }
-
-        .icon {
-            display: inline-block;
-            width: 1em;
-            height: 1em;
-            vertical-align: -0.125em;
-        }
+        * { box-sizing: border-box; }
 
         body {
             font-family: 'Noto Sans KR', sans-serif;
@@ -86,25 +77,14 @@
         .subtitle {
             font-size: 1rem;
             color: #444;
-            font-weight: 400;
-            line-height: 1.6;
-            background: linear-gradient(135deg, #f0f4f8 0%, #e8f0f8 100%);
             padding: 15px 20px;
             border-radius: 8px;
             border-left: 4px solid var(--accent-color);
-            word-break: keep-all;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8f0f8 100%);
         }
 
-        .subtitle strong {
-            color: var(--accent-color);
-            font-weight: 700;
-        }
-
-        /* Sections */
-        .section {
-            margin-bottom: 35px;
-        }
-
+        /* Section & Info Box */
+        .section { margin-bottom: 35px; }
         .section-title {
             display: flex;
             align-items: center;
@@ -112,67 +92,48 @@
             font-weight: 700;
             color: var(--primary-color);
             margin-bottom: 20px;
-            padding: 12px 0 12px 12px;
+            padding: 12px;
             border-bottom: 2px solid var(--primary-color);
             background: linear-gradient(to right, rgba(0,48,91,0.05) 0%, transparent 100%);
         }
 
-        .section-title .icon {
-            margin-right: 12px;
-            color: var(--primary-color);
-            font-size: 1.2rem;
-        }
-
-        /* Content Boxes */
         .info-box {
             background-color: #fff;
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            padding: 22px 25px;
+            padding: 25px;
             margin-bottom: 18px;
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: box-shadow 0.3s ease;
-        }
-
-        .info-box:hover {
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
         .info-box h3 {
-            margin: 0 0 15px 0;
+            margin: 0 0 20px 0;
+            font-size: 1.1rem;
             color: #222;
-            font-size: 1.05rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            padding-bottom: 10px;
             border-bottom: 1px solid #f0f0f0;
-        }
-        
-        .info-box h3::before {
-            content: '■';
-            color: var(--primary-color);
-            margin-right: 8px;
-            font-size: 0.9em;
+            padding-bottom: 10px;
         }
 
+        /* 수정된 포인트: 라벨과 값의 간격 최적화 */
         .content-row {
             display: flex;
-            margin-bottom: 10px;
+            margin-bottom: 12px;
             align-items: flex-start;
-            line-height: 1.6;
         }
 
         .label {
             font-weight: 700;
-            min-width: 110px;
+            min-width: 150px; /* 라벨 폭을 충분히 확보하여 글자 붙음 방지 */
             color: #555;
             flex-shrink: 0;
+            padding-right: 20px; /* 텍스트 사이 여백 */
+            position: relative;
         }
 
         .value {
             flex: 1;
             color: #333;
+            word-break: keep-all;
         }
 
         .highlight {
@@ -186,286 +147,67 @@
         .note {
             font-size: 0.88rem;
             color: #666;
-            margin-top: 12px;
-            padding: 10px 12px;
+            margin-top: 15px;
+            padding: 12px;
             border-left: 3px solid #ddd;
             background-color: #fafafa;
             border-radius: 4px;
-            line-height: 1.7;
         }
 
-        .note strong {
-            color: var(--accent-color);
-            font-weight: 700;
-        }
-
-        /* Caution Grid */
-        .caution-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 18px;
-        }
-
+        /* Caution & Checklist */
+        .caution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
         .caution-item {
-            background: linear-gradient(135deg, var(--warning-bg) 0%, #fff 100%);
             border: 2px solid var(--warning-border);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(211, 47, 47, 0.1);
+            background: #fffafa;
         }
 
-        .caution-item h4 {
-            color: var(--accent-color);
-            margin: 0 0 12px 0;
-            font-size: 1.05rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .caution-item p {
-            margin: 0;
-            font-size: 0.92rem;
-            line-height: 1.7;
-            color: #444;
-        }
-
-        /* Checklist */
-        .checklist {
-            list-style: none;
-            padding: 0;
-            margin: 15px 0 0 0;
-        }
-
-        .checklist li {
-            position: relative;
-            padding-left: 35px;
-            margin-bottom: 15px;
-            font-weight: 500;
-            color: #333;
-            line-height: 1.6;
-        }
-
-        .checklist li::before {
-            content: '✓';
-            font-weight: 900;
-            position: absolute;
-            left: 0;
-            color: var(--primary-color);
-            font-size: 1.3rem;
-            top: 0;
-        }
-
-        .sub-text {
-            display: block;
-            font-size: 0.88rem;
-            color: #666;
-            font-weight: 400;
-            margin-top: 5px;
-        }
-
-        .document-box {
-            border-left: 5px solid var(--primary-color);
-            background: linear-gradient(to right, rgba(0,48,91,0.03) 0%, transparent 100%);
-        }
+        .checklist { list-style: none; padding: 0; margin-top: 15px; }
+        .checklist li { position: relative; padding-left: 30px; margin-bottom: 12px; }
+        .checklist li::before { content: '✓'; position: absolute; left: 0; color: var(--primary-color); font-weight: 900; }
 
         /* Footer */
         .main-footer {
-            width: 100%;
-            max-width: 850px;
-            margin-top: 20px;
-            padding: 30px;
-            background-color: #2c3e50;
-            color: #ecf0f1;
-            border-radius: 12px;
-            text-align: center;
-            font-size: 0.9rem;
-            line-height: 1.8;
+            width: 100%; max-width: 850px; padding: 30px;
+            background-color: #2c3e50; color: #ecf0f1;
+            border-radius: 12px; text-align: center; font-size: 0.9rem;
         }
 
-        .main-footer .company-name {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: #ffd54f;
-            margin-bottom: 15px;
-            display: block;
-        }
-
-        .main-footer .info-line {
-            margin-bottom: 5px;
-        }
-
-        .main-footer a {
-            color: #3498db;
-            text-decoration: none;
-        }
-
-        .main-footer a:hover {
-            text-decoration: underline;
-        }
-
-        .warning-footer {
-            margin-top: 20px;
-            padding: 15px;
-            background-color: #fdf2f2;
-            border: 1px solid #fbd5d5;
-            border-radius: 8px;
-            color: #c81e1e;
-            font-weight: 500;
-            text-align: center;
-            width: 100%;
-        }
-
-        /* Chatbot */
+        /* AI Chatbot */
         .chatbot-toggle {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 65px;
-            height: 65px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, #00305b 0%, #004080 100%);
-            color: white;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 6px 20px rgba(0,48,91,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 999;
-            transition: all 0.3s ease;
-        }
-
-        .chatbot-toggle:hover { transform: scale(1.1); }
-
-        .chatbot-badge {
-            position: absolute;
-            top: -5px;
-            right: -5px;
-            background: #4caf50;
-            color: white;
-            font-size: 10px;
-            font-weight: 700;
-            padding: 3px 6px;
-            border-radius: 10px;
-            border: 2px solid white;
+            position: fixed; bottom: 30px; right: 30px;
+            width: 65px; height: 65px; border-radius: 50%;
+            background: var(--primary-color); color: white; border: none;
+            cursor: pointer; box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            z-index: 1000;
         }
 
         .chatbot-window {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            width: 450px;
-            height: 700px;
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            display: flex;
-            flex-direction: column;
-            z-index: 1000;
-            visibility: hidden;
-            opacity: 0;
-            transform: translateY(20px) scale(0.95);
-            transition: all 0.3s ease;
+            position: fixed; bottom: 100px; right: 30px;
+            width: 400px; height: 600px; background: white;
+            border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+            display: none; flex-direction: column; z-index: 1001;
         }
 
-        .chatbot-window.active {
-            visibility: visible;
-            opacity: 1;
-            transform: translateY(0) scale(1);
-        }
+        .chatbot-window.active { display: flex; }
+        .chatbot-header { padding: 20px; background: var(--primary-color); color: white; border-radius: 20px 20px 0 0; display: flex; justify-content: space-between; }
+        .chatbot-messages { flex: 1; padding: 20px; overflow-y: auto; background: #f9f9f9; }
+        .chatbot-input-area { padding: 15px; border-top: 1px solid #eee; display: flex; gap: 10px; }
+        #chatbot-input { flex: 1; border: 1px solid #ddd; border-radius: 20px; padding: 10px 15px; outline: none; }
+        #chatbot-send { background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; }
 
-        .chatbot-header {
-            padding: 20px;
-            background: linear-gradient(135deg, #00305b 0%, #004080 100%);
-            color: white;
-            border-radius: 20px 20px 0 0;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .chatbot-title { display: flex; align-items: center; gap: 10px; font-weight: 700; }
-        .chatbot-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
-
-        .chatbot-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background-color: #f9f9f9;
-        }
-
-        .message { margin-bottom: 20px; display: flex; gap: 10px; }
-        .user-message { justify-content: flex-end; }
-        .message-content {
-            max-width: 85%;
-            padding: 14px 18px;
-            border-radius: 15px;
-            font-size: 0.95rem;
-            line-height: 1.6;
-            white-space: pre-wrap;
-            word-break: break-word;
-        }
-        .bot-message .message-content { 
-            background: white; 
-            border: 1px solid #e0e0e0; 
-            border-radius: 15px 15px 15px 0; 
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-        .user-message .message-content { background: #00305b; color: white; border-radius: 15px 15px 0 15px; }
-
-        /* AI 답변 내 스타일링 */
-        .bot-message .message-content strong { color: var(--primary-color); font-weight: 700; }
-        .bot-message .message-content ul, .bot-message .message-content ol { margin: 10px 0; padding-left: 20px; }
-        .bot-message .message-content li { margin-bottom: 5px; }
-
-        .chatbot-input-area {
-            padding: 15px;
-            border-top: 1px solid #e0e0e0;
-            display: flex;
-            gap: 10px;
-        }
-
-        #chatbot-input {
-            flex: 1;
-            border: 1px solid #ddd;
-            border-radius: 25px;
-            padding: 10px 18px;
-            outline: none;
-        }
-
-        #chatbot-send {
-            background: #00305b;
-            color: white;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .loading-dot {
-            width: 8px;
-            height: 8px;
-            background: #00305b;
-            border-radius: 50%;
-            display: inline-block;
-            animation: bounce 1.4s infinite ease-in-out;
-        }
-        @keyframes bounce {
-            0%, 80%, 100% { transform: scale(0); }
-            40% { transform: scale(1); }
-        }
+        .message { margin-bottom: 15px; max-width: 85%; }
+        .bot-message { align-self: flex-start; background: white; padding: 12px; border-radius: 15px 15px 15px 0; border: 1px solid #eee; }
+        .user-message { align-self: flex-end; background: var(--primary-color); color: white; padding: 12px; border-radius: 15px 15px 0 15px; margin-left: auto; }
 
         @media (max-width: 768px) {
-            .container { padding: 25px 20px; border-radius: 0; }
-            .logo-container { left: 10px; top: 5px; position: static; text-align: left; margin-bottom: 10px; }
-            h1 { margin-top: 10px; font-size: 1.6rem; }
-            .chatbot-window { width: calc(100% - 20px); height: calc(100% - 20px); bottom: 10px; right: 10px; }
+            .container { padding: 25px 20px; }
+            .logo-container { position: static; text-align: left; margin-bottom: 10px; }
+            .caution-grid { grid-template-columns: 1fr; }
+            .label { min-width: 100%; margin-bottom: 5px; }
+            .content-row { flex-direction: column; }
+            .chatbot-window { width: calc(100% - 40px); bottom: 20px; right: 20px; }
         }
     </style>
 </head>
@@ -478,125 +220,90 @@
             </div>
             <h1>방화유리문(인정제품)<br>발주 및 시공 준수사항 안내문</h1>
             <div class="subtitle">
-                방화문 품질인정제도 시행에 따라, <strong>인정받은 내용과 동일하게 시공되지 않을 경우 인정서 발급이 불가</strong>할 수 있습니다. 
-                공급 및 시공에 차질이 없도록 아래 내용을 반드시 확인 바랍니다.
+                방화문 품질인정제도 시행에 따라, <strong>인정내용과 다르게 시공될 경우 인정서 발급이 불가</strong>합니다. 반드시 내용을 숙지해 주시기 바랍니다.
             </div>
         </header>
 
-        <!-- 1. 주요 시공 표준 -->
         <div class="section">
-            <div class="section-title">
-                <svg class="icon" viewBox="0 0 512 512" fill="currentColor"><path d="M144 416V352H368V416C368 433.7 382.3 448 400 448H432C476.2 448 512 412.2 512 368V256.9L446.4 171.5C444.6 169 441.7 167.2 438.6 166.9L288 150.1V64C288 28.65 259.3 0 224 0C188.7 0 160 28.65 160 64V150.1L9.373 166.9C6.264 167.2 3.371 169 1.585 171.5L0 173.3V368C0 412.2 35.82 448 80 448H112C129.7 448 144 433.7 144 416zM80 368V314.7L256 288.5L432 314.7V368C432 376.8 424.8 384 416 384C407.2 384 400 376.8 400 368V320H112V368C112 376.8 104.8 384 96 384C87.16 384 80 376.8 80 368z"/></svg>
-                1. 주요 시공 준수 표준
-            </div>
+            <div class="section-title">1. 주요 시공 준수 표준</div>
             
             <div class="info-box">
                 <h3>방화문 손잡이(도어핸들) 설치 높이</h3>
                 <div class="content-row">
-                    <span class="label">일반 현장</span>
+                    <span class="label">일반 현장 기준</span>
                     <span class="value">바닥면으로부터 <span class="highlight">800mm ~ 1,050mm</span> (권장 900~950mm)</span>
                 </div>
                 <div class="content-row">
-                    <span class="label">장애인 편의시설 대상시설</span>
+                    <span class="label">장애인 편의시설 대상</span>
                     <span class="value">바닥면으로부터 <span class="highlight">800mm ~ 900mm</span> (BF인증 등)</span>
                 </div>
-                <div class="note">※ 일자손잡이의 경우 손잡이 봉이 800~900mm 사이에 위치하면 적합</div>
+                <div class="note">※ 일자손잡이의 경우 손잡이 봉 부위가 위 범위 내에 위치해야 합니다.</div>
             </div>
 
             <div class="info-box">
                 <h3>방화문 개폐 유효폭 확보</h3>
                 <div class="content-row">
-                    <span class="label">일반 현장</span>
-                    <span class="value">유효폭 900mm 이상 권장</span>
+                    <span class="label">일반 현장 기준</span>
+                    <span class="value">유효폭 900mm 이상 확보 권장</span>
                 </div>
                 <div class="content-row">
-                    <span class="label">장애인 편의시설 대상시설</span>
+                    <span class="label">장애인 편의시설 대상</span>
                     <span class="value"><span class="highlight">반드시 유효폭 900mm 이상 확보</span> (문틀 사이즈 아님)</span>
                 </div>
-                <div class="note">※ 수동문 측정 기준: 문을 90도 개방 시, 손잡이 등 돌출물을 제외한 순수 통과 폭(OPEN SIZE)</div>
+                <div class="note">※ 유효폭: 문을 90도로 열었을 때 돌출물을 제외한 실제 통과 가능한 너비입니다.</div>
             </div>
 
             <div class="info-box">
-                <h3>프레임 사면(4면) 구속 시공 조건</h3>
+                <h3>프레임 사면(4면) 구속 시공</h3>
                 <div class="content-row">
-                    <span class="label">고정 조건</span>
-                    <span class="value">프레임 4면(상·하·좌·우)을 인정받은 내화구조체에 견고하게 고정</span>
+                    <span class="label">고정 방법</span>
+                    <span class="value">프레임 4면을 인정받은 내화구조체(벽체)에 견고하게 고정</span>
                 </div>
-                <div class="note">
-                    ※ <strong>건축물의 피난·방화구조 등의 기준에 관한 규칙 제3조(내화구조)</strong> 내용 참고<br>
-                    ※ 인정받은 제품 외 <strong>별도 비차열창, 유리창 인접 부착 불가</strong><br>
-                    ※ 임의 인접창 설치 시 인정서 발급 불가
-                </div>
+                <div class="note">※ 임의로 인접창(비차열창 등)을 설치할 경우 인정서 발급이 절대 불가합니다.</div>
             </div>
         </div>
 
-        <!-- 2. 주의사항 -->
         <div class="section">
-            <div class="section-title">
-                <svg class="icon" viewBox="0 0 512 512" fill="currentColor"><path d="M256 32c14.2 0 27.3 7.5 34.5 19.8l216 368c7.3 12.4 7.3 27.7 .2 40.1S486.3 480 472 480H40c-14.3 0-27.6-7.7-34.7-20.1s-7-27.8 .2-40.1l216-368C228.7 39.5 241.8 32 256 32zm0 128c-13.3 0-24 10.7-24 24V296c0 13.3 10.7 24 24 24s24-10.7 24-24V184c0-13.3-10.7-24-24-24zm32 224a32 32 0 1 0 -64 0 32 32 0 1 0 64 0z"/></svg>
-                2. 현장 시공 시 주의사항
-            </div>
+            <div class="section-title">2. 현장 시공 시 주의사항</div>
             <div class="caution-grid">
                 <div class="caution-item">
-                    <h4>하드웨어 임의 변경 금지</h4>
-                    <p>신우에서 공급하는 인정 시 포함된 부속품을 반드시 사용해야 합니다.<br><strong>(방화 성적서가 있는 하드웨어만 사용 가능)</strong></p>
+                    <strong style="color:var(--accent-color); display:block; margin-bottom:10px;">하드웨어 임의 변경 금지</strong>
+                    <p style="font-size:0.9rem; margin:0;">공급된 인정 제품 부속품을 반드시 사용해야 합니다. (도어클로저, 힌지 등)</p>
                 </div>
                 <div class="caution-item">
-                    <h4>현장 가공 금지</h4>
-                    <p>인정받은 제품 외 별도의 <strong>타공, 절단, 시트지 부착 불가</strong>합니다.<br>(성능 저하 및 인정 취소 사유)</p>
+                    <strong style="color:var(--accent-color); display:block; margin-bottom:10px;">현장 임의 가공 금지</strong>
+                    <p style="font-size:0.9rem; margin:0;">현장에서의 타공, 절단, 시트지 부착 등은 성능 저하 및 인정 취소 사유가 됩니다.</p>
                 </div>
             </div>
         </div>
 
-        <!-- 3.인정서 요청 필수 제출 자료 -->
         <div class="section">
-            <div class="section-title">
-                <svg class="icon" viewBox="0 0 384 512" fill="currentColor"><path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM80 64h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16s7.2-16 16-16zm16 96H288c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm0 32v64H288V256H96zM240 416h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
-                3.인청서 요청 필수 제출 자료
-            </div>
-            <div class="info-box document-box">
-                <p class="document-notice" style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; font-weight: 600; color: #856404; margin-bottom: 20px; line-height: 1.6;">
-                    아래 자료가 모두 확인되어야 인정서 및 품질확인서 발급이 가능합니다.<br>
-                    <span style="color: #d32f2f;">(계산서 발행한 사업자 이름으로 발행됨)</span>
-                </p>
+            <div class="section-title">3. 인정서 요청 필수 자료</div>
+            <div class="info-box" style="border-left: 5px solid var(--primary-color);">
                 <ul class="checklist">
-                    <li>품질확인 점검표 <span class="sub-text">당사 제공 양식에 따라 시공자가 항목별 점검 후 서명</span></li>
-                    <li>시공 사진 <span class="sub-text">내부·외부 전경 및 주요 고정 부위 사진 (프레임, 도어 세트 시공 후)</span></li>
-                    <li>전액 입금 확인 <span class="sub-text">발주 물량에 대한 입금 완료 후 서류 발송</span></li>
+                    <li><strong>품질확인 점검표:</strong> 당사 양식에 따른 시공자 항목 점검 및 서명</li>
+                    <li><strong>시공 사진:</strong> 내/외부 전경 및 주요 고정 부위 (프레임 시공 후)</li>
+                    <li><strong>입금 확인:</strong> 발주 물량에 대한 전액 입금 완료 확인</li>
                 </ul>
-                <div class="note">※ 인정서 발급 후 현장명, 현장주소 수정 불가</div>
+                <p style="font-size:0.85rem; color:var(--accent-color); margin-top:10px;">※ 모든 서류는 계산서 발행 사업자 명의로 발급됩니다.</p>
             </div>
-        </div>
-
-        <div class="warning-footer">
-            ※ 주의: 위 사항을 준수하지 않아 발생하는 재시공 및 준공 지연에 대해서는<br>
-            당사에서 책임지지 않으므로 각별한 주의 바랍니다.
         </div>
     </div>
 
     <footer class="main-footer">
-        <span class="company-name">(주)신우금속</span>
-        <div class="info-line">주소: 경기도 남양주시 진접읍 팔야산단로32번길 15</div>
-        <div class="info-line">Tel: 031-575-6253 | Fax : 031-575-6251</div>
-        <div class="info-line">E-mail : <a href="mailto:swst6253@naver.com">swst6253@naver.com</a></div>
-        <div class="info-line">홈페이지: <a href="http://swst.kr/" target="_blank">http://swst.kr/</a></div>
+        <strong style="color:#ffd54f; font-size:1.1rem;">(주)신우금속</strong><br>
+        경기도 남양주시 진접읍 팔야산단로32번길 15<br>
+        Tel: 031-575-6253 | Fax : 031-575-6251 | <a href="http://swst.kr/" style="color:#3498db;">홈페이지 바로가기</a>
     </footer>
 
-    <!-- AI 챗봇 -->
-    <button id="chatbot-toggle" class="chatbot-toggle">
-        <svg class="icon" viewBox="0 0 512 512" fill="currentColor"><path d="M184 0c30.9 0 56 25.1 56 56V456c0 30.9-25.1 56-56 56c-28.9 0-52.7-21.9-55.7-50.1c-5.2 1.4-10.7 2.1-16.3 2.1c-35.3 0-64-28.7-64-64c0-7.4 1.3-14.6 3.6-21.2C21.4 367.4 0 338.2 0 304c0-31.9 18.7-59.5 45.8-72.3C37.1 220.8 32 207 32 192c0-30.7 21.6-56.3 50.4-62.6C80.8 123.9 80 118 80 112c0-29.9 20.6-55.1 48.3-62.1C131.3 21.9 155.1 0 184 0zM328 0c28.9 0 52.6 21.9 55.7 49.9c27.8 7 48.3 32.1 48.3 62.1c0 6-.8 11.9-2.4 17.4c28.8 6.2 50.4 31.9 50.4 62.6c0 15-5.1 28.8-13.8 39.7C493.3 244.5 512 272.1 512 304c0 34.2-21.4 63.4-51.6 74.8c2.3 6.6 3.6 13.8 3.6 21.2c0 35.3-28.7 64-64 64c-5.6 0-11.1-.7-16.3-2.1c-3 28.2-26.8 50.1-55.7 50.1c-30.9 0-56-25.1-56-56V56c0-30.9 25.1-56 56-56z"/></svg>
-        <span class="chatbot-badge">AI</span>
-    </button>
-
+    <button id="chatbot-toggle" class="chatbot-toggle">AI</button>
     <div id="chatbot-window" class="chatbot-window">
         <div class="chatbot-header">
-            <div class="chatbot-title">방화문 시공 AI 도우미</div>
-            <button id="chatbot-close" class="chatbot-close">✕</button>
+            <span>방화문 시공 AI 도우미</span>
+            <button id="chatbot-close" style="background:none; border:none; color:white; cursor:pointer;">✕</button>
         </div>
         <div id="chatbot-messages" class="chatbot-messages">
-            <div class="message bot-message">
-                <div class="message-content">안녕하세요! (주)신우금속 AI 도우미입니다. 안내문 내용이나 최신 방화문 법규에 대해 질문해 주세요. 😊</div>
-            </div>
+            <div class="message bot-message">안녕하세요! (주)신우금속 AI 도우미입니다. 무엇을 도와드릴까요?</div>
         </div>
         <div class="chatbot-input-area">
             <input type="text" id="chatbot-input" placeholder="질문을 입력하세요...">
@@ -605,64 +312,48 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const toggleBtn = document.getElementById('chatbot-toggle');
-            const closeBtn = document.getElementById('chatbot-close');
-            const window = document.getElementById('chatbot-window');
-            const input = document.getElementById('chatbot-input');
-            const sendBtn = document.getElementById('chatbot-send');
-            const messagesContainer = document.getElementById('chatbot-messages');
+        const toggleBtn = document.getElementById('chatbot-toggle');
+        const closeBtn = document.getElementById('chatbot-close');
+        const windowBox = document.getElementById('chatbot-window');
+        const input = document.getElementById('chatbot-input');
+        const sendBtn = document.getElementById('chatbot-send');
+        const messages = document.getElementById('chatbot-messages');
 
-            toggleBtn.addEventListener('click', () => { window.classList.add('active'); input.focus(); });
-            closeBtn.addEventListener('click', () => { window.classList.remove('active'); });
+        toggleBtn.onclick = () => windowBox.classList.toggle('active');
+        closeBtn.onclick = () => windowBox.classList.remove('active');
 
-            function addMessage(text, isBot = false) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${isBot ? 'bot-message' : 'user-message'}`;
-                
-                // 마크다운 스타일의 볼드체와 줄바꿈 처리
-                let formattedText = text
-                    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-                    .replace(/\n/g, '<br>');
-                
-                messageDiv.innerHTML = `<div class="message-content">${formattedText}</div>`;
-                messagesContainer.appendChild(messageDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        async function sendMessage() {
+            const text = input.value.trim();
+            if(!text) return;
+
+            const userDiv = document.createElement('div');
+            userDiv.className = 'message user-message';
+            userDiv.innerText = text;
+            messages.appendChild(userDiv);
+            input.value = '';
+
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({message: text})
+                });
+                const data = await res.json();
+                const botDiv = document.createElement('div');
+                botDiv.className = 'message bot-message';
+                botDiv.innerHTML = data.response.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+                messages.appendChild(botDiv);
+                messages.scrollTop = messages.scrollHeight;
+            } catch {
+                const errDiv = document.createElement('div');
+                errDiv.className = 'message bot-message';
+                errDiv.innerText = "연결 오류가 발생했습니다.";
+                messages.appendChild(errDiv);
             }
+        }
 
-            function showLoading() {
-                const loadingDiv = document.createElement('div');
-                loadingDiv.className = 'message bot-message loading-indicator';
-                loadingDiv.innerHTML = `<div class="message-content"><div class="loading-dot"></div> <div class="loading-dot"></div> <div class="loading-dot"></div></div>`;
-                messagesContainer.appendChild(loadingDiv);
-                messagesContainer.scrollTop = messagesContainer.scrollHeight;
-                return loadingDiv;
-            }
-
-            async function handleSend() {
-                const text = input.value.trim();
-                if (!text) return;
-                addMessage(text, false);
-                input.value = '';
-                const loading = showLoading();
-                try {
-                    const response = await fetch('/api/chat', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ message: text })
-                    });
-                    const data = await response.json();
-                    loading.remove();
-                    addMessage(data.response, true);
-                } catch (e) {
-                    loading.remove();
-                    addMessage("오류가 발생했습니다. 다시 시도해 주세요.", true);
-                }
-            }
-
-            sendBtn.addEventListener('click', handleSend);
-            input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleSend(); });
-        });
+        sendBtn.onclick = sendMessage;
+        input.onkeypress = (e) => { if(e.key === 'Enter') sendMessage(); };
     </script>
 </body>
 </html>
