@@ -17,241 +17,89 @@
             --warning-border: #ffcdd2;
         }
 
-        * { box-sizing: border-box; }
-
-        .icon {
+        /* 로딩 애니메이션 스타일 */
+        .typing-indicator {
+            display: flex;
+            gap: 4px;
+            padding: 4px 0;
+            align-items: center;
+        }
+        .typing-indicator span {
+            width: 6px;
+            height: 6px;
+            background-color: #aaa;
+            border-radius: 50%;
             display: inline-block;
-            width: 1em;
-            height: 1em;
-            vertical-align: -0.125em;
+            animation: typing-bounce 1.3s infinite both;
+        }
+        .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+        .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typing-bounce {
+            0%, 80%, 100% { transform: scale(0); opacity: 0.3; }
+            40% { transform: scale(1); opacity: 1; }
         }
 
-        body {
-            font-family: 'Noto Sans KR', sans-serif;
-            background-color: var(--bg-color);
-            margin: 0;
-            padding: 20px;
-            color: #333;
-            line-height: 1.7;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .container {
-            width: 100%;
-            max-width: 850px;
-            background-color: white;
-            padding: 40px 50px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-            border-radius: 12px;
-            position: relative;
-            margin-bottom: 30px;
-            overflow: hidden;
-        }
-
-        /* Header */
-        header {
-            text-align: center;
-            border-bottom: 4px solid var(--primary-color);
-            padding-bottom: 25px;
-            margin-bottom: 35px;
-            position: relative;
-        }
-
-        .logo-container {
-            position: absolute;
-            top: -10px;
-            left: -30px;
-            margin: 0;
-        }
-
-        .logo-container img {
-            max-width: 180px;
-            height: auto;
-        }
-
-        h1 {
-            color: var(--primary-color);
-            font-size: 2rem;
-            font-weight: 900;
-            margin: 40px 0 15px 0;
-            letter-spacing: -0.5px;
-            word-break: keep-all;
-            line-height: 1.3;
-        }
-
-        .subtitle {
-            font-size: 1rem;
-            color: #444;
-            font-weight: 400;
-            line-height: 1.6;
-            background: linear-gradient(135deg, #f0f4f8 0%, #e8f0f8 100%);
-            padding: 15px 20px;
-            border-radius: 8px;
-            border-left: 4px solid var(--accent-color);
-            word-break: keep-all;
-            text-align: left;
-        }
-
+        * { box-sizing: border-box; }
+        .icon { display: inline-block; width: 1em; height: 1em; vertical-align: -0.125em; }
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: var(--bg-color); margin: 0; padding: 20px; color: #333; line-height: 1.7; display: flex; flex-direction: column; align-items: center; }
+        .container { width: 100%; max-width: 850px; background-color: white; padding: 40px 50px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-radius: 12px; position: relative; margin-bottom: 30px; overflow: hidden; }
+        header { text-align: center; border-bottom: 4px solid var(--primary-color); padding-bottom: 25px; margin-bottom: 35px; position: relative; }
+        .logo-container { position: absolute; top: -10px; left: -30px; margin: 0; }
+        .logo-container img { max-width: 180px; height: auto; }
+        h1 { color: var(--primary-color); font-size: 2rem; font-weight: 900; margin: 40px 0 15px 0; letter-spacing: -0.5px; word-break: keep-all; line-height: 1.3; }
+        .subtitle { font-size: 1rem; color: #444; font-weight: 400; line-height: 1.6; background: linear-gradient(135deg, #f0f4f8 0%, #e8f0f8 100%); padding: 15px 20px; border-radius: 8px; border-left: 4px solid var(--accent-color); word-break: keep-all; text-align: left; }
         .subtitle strong { color: var(--accent-color); font-weight: 700; }
-
-        /* Sections */
         .section { margin-bottom: 35px; width: 100%; }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            font-size: 1.3rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            padding: 12px 0 12px 12px;
-            border-bottom: 2px solid var(--primary-color);
-            background: linear-gradient(to right, rgba(0,48,91,0.05) 0%, transparent 100%);
-        }
-
+        .section-title { display: flex; align-items: center; font-size: 1.3rem; font-weight: 700; color: var(--primary-color); margin-bottom: 20px; padding: 12px 0 12px 12px; border-bottom: 2px solid var(--primary-color); background: linear-gradient(to right, rgba(0,48,91,0.05) 0%, transparent 100%); }
         .section-title .icon { margin-right: 12px; font-size: 1.2rem; }
-
-        /* Content Boxes */
-        .info-box {
-            background-color: #fff;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 22px 25px;
-            margin-bottom: 18px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-
-        .info-box h3 {
-            margin: 0 0 15px 0;
-            color: #222;
-            font-size: 1.05rem;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #f0f0f0;
-        }
-        
-        .info-box h3::before {
-            content: '■';
-            color: var(--primary-color);
-            margin-right: 8px;
-            font-size: 0.9em;
-        }
-
-        /* 여백 수정된 부분 */
-        .content-row {
-            display: flex;
-            margin-bottom: 10px;
-            align-items: flex-start;
-        }
-
-        .label {
-            font-weight: 700;
-            min-width: 160px; /* 충분한 공간 확보 */
-            color: #555;
-            flex-shrink: 0;
-        }
-
+        .info-box { background-color: #fff; border: 1px solid var(--border-color); border-radius: 10px; padding: 22px 25px; margin-bottom: 18px; box-shadow: 0 2px 8px rgba(0,0,0,0.04); }
+        .info-box h3 { margin: 0 0 15px 0; color: #222; font-size: 1.05rem; font-weight: 700; display: flex; align-items: center; padding-bottom: 10px; border-bottom: 1px solid #f0f0f0; }
+        .info-box h3::before { content: '■'; color: var(--primary-color); margin-right: 8px; font-size: 0.9em; }
+        .content-row { display: flex; margin-bottom: 10px; align-items: flex-start; }
+        .label { font-weight: 700; min-width: 160px; color: #555; flex-shrink: 0; }
         .value { flex: 1; color: #333; }
         .highlight { color: var(--accent-color); font-weight: 700; background-color: rgba(211,47,47,0.08); padding: 2px 6px; border-radius: 4px; }
-
-        .note {
-            font-size: 0.88rem;
-            color: #666;
-            margin-top: 12px;
-            padding: 10px 12px;
-            border-left: 3px solid #ddd;
-            background-color: #fafafa;
-            border-radius: 4px;
-        }
-
+        .note { font-size: 0.88rem; color: #666; margin-top: 12px; padding: 10px 12px; border-left: 3px solid #ddd; background-color: #fafafa; border-radius: 4px; }
         .caution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-        .caution-item {
-            background: linear-gradient(135deg, var(--warning-bg) 0%, #fff 100%);
-            border: 2px solid var(--warning-border);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        .caution-item h4 { color: var(--accent-color); margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px; }
-
+        .caution-item { background: linear-gradient(135deg, var(--warning-bg) 0%, #fff 100%); border: 2px solid var(--warning-border); padding: 20px; border-radius: 10px; }
+        .caution-item h4 { color: var(--accent-color); margin: 0 0 12px 0; display: flex; align-items: center; gap: 8px; font-size: 1.05rem; }
         .checklist { list-style: none; padding: 0; margin: 15px 0 0 0; }
         .checklist li { position: relative; padding-left: 35px; margin-bottom: 15px; font-weight: 500; }
         .checklist li::before { content: '✓'; position: absolute; left: 0; color: var(--primary-color); font-size: 1.3rem; font-weight: 900; top: 0; }
         .sub-text { display: block; font-size: 0.88rem; color: #666; margin-top: 5px; font-weight: 400; }
-
-        .main-footer {
-            width: 100%; max-width: 850px; margin-top: 20px; padding: 30px;
-            background-color: #2c3e50; color: #ecf0f1; border-radius: 12px; text-align: center; font-size: 0.9rem;
-        }
+        .main-footer { width: 100%; max-width: 850px; margin-top: 20px; padding: 30px; background-color: #2c3e50; color: #ecf0f1; border-radius: 12px; text-align: center; font-size: 0.9rem; }
         .main-footer .company-name { font-size: 1.2rem; font-weight: 700; color: #ffd54f; margin-bottom: 15px; display: block; }
         .main-footer a { color: #3498db; text-decoration: none; }
+        .warning-footer { margin-top: 20px; padding: 15px; background-color: #fdf2f2; border: 1px solid #fbd5d5; border-radius: 8px; color: #c81e1e; font-weight: 500; text-align: center; width: 100%; max-width: 850px; }
 
-        .warning-footer {
-            margin-top: 20px; padding: 15px; background-color: #fdf2f2; border: 1px solid #fbd5d5;
-            border-radius: 8px; color: #c81e1e; font-weight: 500; text-align: center; width: 100%; max-width: 850px;
+        /* 챗봇 스타일 */
+        .chatbot-toggle { position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px; border-radius: 50%; background: var(--primary-color); color: white; border: none; cursor: pointer; box-shadow: 0 10px 25px rgba(0,48,91,0.4); z-index: 999; display: flex; align-items: center; justify-content: center; font-weight: bold; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+        .chatbot-toggle:hover { transform: scale(1.1) rotate(5deg); }
+        .chatbot-badge { position: absolute; top: -5px; right: -5px; background: #4caf50; color: white; font-size: 10px; padding: 3px 6px; border-radius: 10px; border: 2px solid white; }
+        .chatbot-window { position: fixed; bottom: 100px; right: 30px; width: 380px; height: 600px; background: rgba(255, 255, 255, 0.98); border-radius: 24px; box-shadow: 0 15px 50px rgba(0,0,0,0.15); display: none; flex-direction: column; z-index: 1000; overflow: hidden; border: 1px solid rgba(0,0,0,0.05); backdrop-filter: blur(10px); }
+        .chatbot-window.active { display: flex; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .chatbot-header { padding: 20px; background: linear-gradient(135deg, #00305b 0%, #0056a4 100%); color: white; display: flex; justify-content: space-between; align-items: center; }
+        .chatbot-messages { flex: 1; padding: 20px; overflow-y: auto; background-color: #f8f9fa; display: flex; flex-direction: column; gap: 12px; }
+        .faq-container { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px 15px; background: #f8f9fa; border-top: 1px solid #eee; }
+        .faq-btn { background: white; color: var(--primary-color); border: 1px solid #d0e0f0; padding: 6px 12px; border-radius: 15px; font-size: 0.8rem; cursor: pointer; transition: all 0.2s; font-weight: 500; }
+        .faq-btn:hover { background: var(--primary-color); color: white; }
+        .message { padding: 12px 16px; border-radius: 18px; font-size: 0.92rem; line-height: 1.5; max-width: 85%; }
+        .bot-message { align-self: flex-start; background: white; color: #333; border-bottom-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .user-message { align-self: flex-end; background: var(--primary-color); color: white; border-bottom-right-radius: 2px; }
+        .chatbot-input-area { padding: 15px; background: white; display: flex; gap: 8px; border-top: 1px solid #eee; }
+        #chatbot-input { flex: 1; border: 1.5px solid #eee; border-radius: 12px; padding: 10px 15px; outline: none; }
+        #chatbot-send { background: var(--primary-color); color: white; border: none; padding: 0 15px; border-radius: 12px; cursor: pointer; }
+
+        @media (max-width: 768px) {
+            .container { padding: 25px 20px; }
+            .logo-container { position: static; text-align: left; margin-bottom: 10px; }
+            .caution-grid { grid-template-columns: 1fr; }
+            .label { min-width: 100%; margin-bottom: 5px; }
+            .content-row { flex-direction: column; }
+            .chatbot-window { width: calc(100% - 20px); height: 80vh; bottom: 10px; right: 10px; }
         }
-
-        /* Chatbot */
-       .chatbot-toggle {
-        position: fixed; bottom: 30px; right: 30px; width: 65px; height: 65px;
-        border-radius: 50%; background: var(--primary-color); color: white; border: none;
-        cursor: pointer; box-shadow: 0 10px 25px rgba(0,48,91,0.4); z-index: 999;
-        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        display: flex; align-items: center; justify-content: center; font-weight: bold;
-    }
-    .chatbot-toggle:hover { transform: scale(1.1) rotate(5deg); }
-
-    /* 챗봇 윈도우 현대화 */
-    .chatbot-window {
-        position: fixed; bottom: 100px; right: 30px; width: 380px; height: 600px;
-        background: rgba(255, 255, 255, 0.98); border-radius: 24px; 
-        box-shadow: 0 15px 50px rgba(0,0,0,0.15);
-        display: none; flex-direction: column; z-index: 1000; overflow: hidden;
-        border: 1px solid rgba(0,0,0,0.05); backdrop-filter: blur(10px);
-    }
-    .chatbot-window.active { display: flex; animation: slideUp 0.4s ease-out; }
-
-    @keyframes slideUp {
-        from { opacity: 0; transform: translateY(20px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .chatbot-header { 
-        padding: 20px; background: linear-gradient(135deg, #00305b 0%, #0056a4 100%); 
-        color: white; display: flex; justify-content: space-between; align-items: center;
-    }
-
-    .chatbot-messages { 
-        flex: 1; padding: 20px; overflow-y: auto; background-color: #f8f9fa; 
-        display: flex; flex-direction: column; gap: 12px;
-    }
-
-    .message { padding: 12px 16px; border-radius: 18px; font-size: 0.92rem; line-height: 1.5; max-width: 85%; }
-    
-    .bot-message { 
-        align-self: flex-start; background: white; color: #333; 
-        border-bottom-left-radius: 2px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); 
-    }
-    
-    .user-message { 
-        align-self: flex-end; background: var(--primary-color); color: white; 
-        border-bottom-right-radius: 2px; 
-    }
-
-    .chatbot-input-area { padding: 15px; background: white; display: flex; gap: 8px; border-top: 1px solid #eee; }
-    #chatbot-input { 
-        flex: 1; border: 1.5px solid #eee; border-radius: 12px; padding: 10px 15px; 
-        outline: none; transition: border-color 0.2s; 
-    }
-    #chatbot-input:focus { border-color: var(--primary-color); }
-    #chatbot-send { 
-        background: var(--primary-color); color: white; border: none; 
-        padding: 0 15px; border-radius: 12px; cursor: pointer; font-weight: bold;
-    }
-</style>
     </style>
 </head>
 <body>
@@ -274,14 +122,14 @@
                 1. 주요 시공 준수 표준
             </div>
             
-<div class="info-box">
+            <div class="info-box">
                 <h3>방화문 손잡이(도어핸들) 설치 높이</h3>
                 <div class="content-row">
                     <span class="label">일반 현장</span>
                     <span class="value">바닥면으로부터 <span class="highlight">800mm ~ 1,050mm</span> (권장 900~950mm)</span>
                 </div>
                 <div class="content-row">
-                    <span class="label">장애인 편의시설 기준</span> <span class="value">바닥면으로부터 <span class="highlight">800mm ~ 900mm</span> (BF인증 등)</span>
+                    <span class="label">장애인 편의시설</span> <span class="value">바닥면으로부터 <span class="highlight">800mm ~ 900mm</span> (BF인증 기준 등)</span>
                 </div>
                 <div class="note">※ 일자손잡이의 경우 손잡이 봉이 800~900mm 사이에 위치하면 적합</div>
             </div>
@@ -293,7 +141,7 @@
                     <span class="value">유효폭 900mm 이상 권장</span>
                 </div>
                 <div class="content-row">
-                    <span class="label">장애인 편의시설 기준</span> <span class="value"><span class="highlight">반드시 유효폭 900mm 이상 확보</span> (문틀 사이즈 아님)</span>
+                    <span class="label">장애인 편의시설</span> <span class="value"><span class="highlight">반드시 유효폭 900mm 이상 확보</span> (문틀 사이즈 아님)</span>
                 </div>
                 <div class="note">※ 수동문 측정 기준: 문을 90도 개방 시, 손잡이 등 돌출물을 제외한 순수 통과 폭(OPEN SIZE)</div>
             </div>
@@ -362,12 +210,20 @@
     <button id="chatbot-toggle" class="chatbot-toggle">AI <span class="chatbot-badge">ON</span></button>
     <div id="chatbot-window" class="chatbot-window">
         <div class="chatbot-header">
-            <span>방화문 시공 AI 도우미</span>
+            <span style="font-weight:bold;">방화문 시공 AI 도우미</span>
             <button id="chatbot-close" style="background:none; border:none; color:white; cursor:pointer; font-size:20px;">✕</button>
         </div>
         <div id="chatbot-messages" class="chatbot-messages">
-            <div class="message bot-message">안녕하세요! (주)신우금속 AI 도우미입니다. 무엇을 도와드릴까요?</div>
+            <div class="message bot-message">안녕하세요! (주)신우금속 AI 도우미입니다. 자주 묻는 질문을 선택하거나 궁금한 점을 입력해 주세요.</div>
         </div>
+        
+        <div class="faq-container">
+            <button class="faq-btn" onclick="askFAQ('손잡이 높이 기준')">📏 손잡이 높이</button>
+            <button class="faq-btn" onclick="askFAQ('장애인 유효폭')">🚪 장애인 유효폭</button>
+            <button class="faq-btn" onclick="askFAQ('인정서 필요 서류')">📄 인정서 서류</button>
+            <button class="faq-btn" onclick="askFAQ('시공 주의사항')">⚠️ 시공 주의</button>
+        </div>
+
         <div class="chatbot-input-area">
             <input type="text" id="chatbot-input" placeholder="질문을 입력하세요...">
             <button id="chatbot-send">전송</button>
@@ -375,10 +231,16 @@
     </div>
 
     <script>
+        function askFAQ(question) {
+            const input = document.getElementById('chatbot-input');
+            input.value = question;
+            document.getElementById('chatbot-send').click();
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const toggleBtn = document.getElementById('chatbot-toggle');
             const closeBtn = document.getElementById('chatbot-close');
-            const chatBox = document.getElementById('chatbot-window'); // 변수명 window -> chatBox로 변경 (충돌 방지)
+            const chatBox = document.getElementById('chatbot-window');
             const input = document.getElementById('chatbot-input');
             const sendBtn = document.getElementById('chatbot-send');
             const messagesContainer = document.getElementById('chatbot-messages');
@@ -390,11 +252,22 @@
                 const text = input.value.trim();
                 if(!text) return;
 
+                // 1. 사용자 메시지 표시
                 const uMsg = document.createElement('div');
                 uMsg.className = 'message user-message';
-                uMsg.innerHTML = `<div class="bot-message" style="background:var(--primary-color); color:white; border:none;">${text}</div>`;
+                uMsg.innerHTML = text;
                 messagesContainer.appendChild(uMsg);
                 input.value = '';
+                
+                // 2. 입력 중 애니메이션 표시
+                const loadingMsg = document.createElement('div');
+                loadingMsg.className = 'message bot-message';
+                loadingMsg.id = 'temp-loading';
+                loadingMsg.innerHTML = `
+                    <div class="typing-indicator">
+                        <span></span><span></span><span></span>
+                    </div>`;
+                messagesContainer.appendChild(loadingMsg);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
 
                 try {
@@ -404,14 +277,24 @@
                         body: JSON.stringify({message: text})
                     });
                     const data = await res.json();
+                    
+                    // 3. 로딩 애니메이션 제거
+                    const loader = document.getElementById('temp-loading');
+                    if(loader) loader.remove();
+
+                    // 4. AI 답변 표시
                     const bMsg = document.createElement('div');
                     bMsg.className = 'message bot-message';
                     bMsg.innerHTML = data.response.replace(/\n/g, '<br>').replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
                     messagesContainer.appendChild(bMsg);
+
                 } catch {
+                    const loader = document.getElementById('temp-loading');
+                    if(loader) loader.remove();
+                    
                     const eMsg = document.createElement('div');
                     eMsg.className = 'message bot-message';
-                    eMsg.innerText = "오류가 발생했습니다.";
+                    eMsg.innerText = "서버 연결에 실패했습니다. 다시 시도해 주세요.";
                     messagesContainer.appendChild(eMsg);
                 }
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
