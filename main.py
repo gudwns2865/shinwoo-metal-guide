@@ -1,4 +1,6 @@
 import os
+import time
+import asyncio
 import google.generativeai as genai
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
@@ -7,7 +9,6 @@ from fastapi.responses import FileResponse
 
 app = FastAPI()
 
-# CORS 설정
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -15,30 +16,27 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# 1. Gemini 설정 및 모델 자동 선택 로직
+# 1. Gemini 설정 및 모델 자동 선택
 api_key = os.environ.get("GEMINI_API_KEY")
 model = None
 
-if not api_key:
-    print("❌ 에러: GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.")
-else:
+def setup_model():
+    global model
+    if not api_key:
+        print("❌ 에러: GEMINI_API_KEY 환경 변수가 설정되지 않았습니다.")
+        return
+    
     genai.configure(api_key=api_key)
     try:
-        # 사용 가능한 모델 목록 가져오기
         available_models = [
             m.name for m in genai.list_models() 
             if 'generateContent' in m.supported_generation_methods
         ]
         
         if available_models:
-            # 우선순위: gemini-1.5-flash -> gemini-1.5-pro -> 리스트의 첫 번째 모델
-            selected_model_name = None
-            for target in ['models/gemini-1.5-flash', 'models/gemini-1.5-flash-latest', 'models/gemini-pro']:
-                if target in available_models:
-                    selected_model_name = target
-                    break
-            
-            if not selected_model_name:
+            # 무료 티어에서 가장 쿼터가 넉넉한 1.5-flash를 1순위로 고정
+            selected_model_name = 'models/gemini-1.5-flash' 
+            if selected_model_name not in available_models:
                 selected_model_name = available_models[0]
             
             model = genai.GenerativeModel(selected_model_name)
@@ -48,7 +46,8 @@ else:
     except Exception as e:
         print(f"❌ 모델 초기화 중 오류 발생: {e}")
 
-# 안내문 원본 텍스트
+setup_model()
+
 GUIDE_CONTENT = """
 [방화유리문(인정제품) 발주 및 시공 준수사항]
 1. 주요 시공 준수 표준
@@ -64,35 +63,36 @@ class ChatRequest(BaseModel):
 
 @app.post("/api/chat")
 async def chat(request: ChatRequest):
-    # 2. 예외 처리 강화
     if not api_key:
         return {"response": "서버 설정 오류: API 키가 등록되지 않았습니다."}
     if not model:
-        return {"response": "AI 모델을 초기화할 수 없습니다. API 키 권한을 확인하세요."}
+        setup_model() # 모델이 없으면 재시도
+        if not model: return {"response": "AI 모델을 초기화할 수 없습니다."}
     
-    try:
-        prompt = f"""
-        당신은 (주)신우금속의 방화문 시공 전문 AI 도우미입니다.
-        지침:
-        1. 아래 [안내문 내용]을 최우선으로 참고하여 답변하세요.
-        2. 안내문에 없는 내용은 실시간 지식을 바탕으로 전문적으로 답변하세요.
-        3. 한국어로 답변하고, 중요 수치는 볼드체(**)를 사용하세요.
-        4. 줄바꿈을 적절히 사용하여 가독성을 높이세요.
-
-        [안내문 내용]
-        {GUIDE_CONTENT}
-
-        사용자 질문: {request.message}
-        """
+    prompt = f"""당신은 (주)신우금속의 방화문 시공 전문 AI 도우미입니다.
+    다음 안내문을 참고하여 질문에 답하세요: {GUIDE_CONTENT}
+    질문: {request.message}"""
+    
+    # --- 할당량 초과(429) 대응 로직 ---
+    max_retries = 2  # 최대 2번 재시도
+    for i in range(max_retries + 1):
+        try:
+            response = await model.generate_content_async(prompt)
+            return {"response": response.text}
         
-        # 비동기 호출
-        response = await model.generate_content_async(prompt)
-        return {"response": response.text}
-        
-    except Exception as e:
-        print(f"AI 호출 중 오류 발생: {str(e)}")
-        # 에러 메시지가 너무 길 경우를 대비해 요약된 메시지 반환
-        return {"response": f"AI 서비스 연결 중 오류가 발생했습니다. (사유: {str(e)[:100]})"}
+        except Exception as e:
+            error_msg = str(e)
+            # 할당량 초과(429) 에러인 경우
+            if "429" in error_msg:
+                if i < max_retries:
+                    await asyncio.sleep(3) # 3초 대기 후 재시도
+                    continue
+                else:
+                    return {"response": "⚠️ 현재 사용자가 많아 응답이 지연되고 있습니다. **10초만 기다렸다가** 다시 질문해 주시겠어요?"}
+            
+            # 기타 에러
+            print(f"AI 호출 오류: {error_msg}")
+            return {"response": f"AI 서비스 연결 중 오류가 발생했습니다. (잠시 후 다시 시도해 주세요)"}
 
 @app.get("/")
 async def read_index():
@@ -100,8 +100,6 @@ async def read_index():
 
 @app.get("/logo.png")
 async def get_logo():
-    # 파일명 오타 방지를 위해 실제 존재하는 파일명으로 확인 필요 (new_logo.png vs logo.png)
-    # 기존 코드에서 new_logo.png를 반환하도록 되어 있어 유지합니다.
     return FileResponse("new_logo.png")
 
 if __name__ == "__main__":
