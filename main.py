@@ -100,7 +100,7 @@ async def read_index():
 
 @app.get("/logo.png")
 async def get_logo():
-    return FileResponse("new_logo.png")
+    return FileResponse("logo.png")
 
 if __name__ == "__main__":
     import uvicorn
