@@ -106,10 +106,6 @@ async def get_logo():
 async def get_model1():
     return FileResponse("model1.jpg")
 
-@app.get("/model2.jpg")
-async def get_model2():
-    return FileResponse("model2.jpg")
-
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 10000))
