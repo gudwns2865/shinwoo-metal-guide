@@ -74,9 +74,6 @@
         .warning-footer { margin-top: 20px; padding: 15px; background-color: #fdf2f2; border: 1px solid #fbd5d5; border-radius: 8px; color: #c81e1e; font-weight: 500; text-align: center; width: 100%; max-width: 850px; }
 
         /* 다이어그램(이미지) 추가 스타일 */
-        .diagram-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 15px; padding-top: 15px; border-top: 1px dashed #e0e0e0; }
-        .diagram-item { text-align: center; }
-        .diagram-item img { width: 100%; height: auto; border: 1px solid #eee; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
         .diagram-caption { font-size: 0.85rem; color: #555; margin-top: 8px; font-weight: 600; display: block; }
 
         /* 챗봇 스타일 */
@@ -102,11 +99,51 @@
             .container { padding: 25px 20px; }
             .logo-container { position: static; text-align: left; margin-bottom: 10px; }
             .caution-grid { grid-template-columns: 1fr; }
-            /* 모바일에서 다이어그램 1열 배치 */
-            .diagram-grid { grid-template-columns: 1fr; }
             .label { min-width: 100%; margin-bottom: 5px; }
             .content-row { flex-direction: column; }
             .chatbot-window { width: calc(100% - 20px); height: 80vh; bottom: 10px; right: 10px; }
+        }
+
+        /* PDF 다운로드 버튼 스타일 */
+        .pdf-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: background 0.2s;
+            position: absolute;
+            top: 0;
+            right: 0; /* 우측 상단 배치 */
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .pdf-btn:hover { background-color: #5a6268; }
+
+        /* ★ PDF 저장/인쇄 시 적용되는 스타일 */
+        @media print {
+            .pdf-btn, .chatbot-toggle, .chatbot-window, .main-footer {
+                display: none !important;
+            }
+            body { 
+                background-color: white; 
+                padding: 0;
+                margin: 0;
+                -webkit-print-color-adjust: exact;
+            }
+            .container {
+                box-shadow: none;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+                max-width: 100%;
+                border: none;
+            }
+            .section, .info-box { break-inside: avoid; }
         }
     </style>
 </head>
@@ -117,6 +154,9 @@
             <div class="logo-container">
                 <img src="logo.png" alt="(주)신우금속 로고">
             </div>
+
+            <button onclick="window.print()" class="pdf-btn">🖨️ PDF 저장 / 인쇄</button>
+            
             <h1>방화유리문(인정제품)<br>발주 및 시공 준수사항 안내문</h1>
             <div class="subtitle">
                 방화문 품질인정제도 시행에 따라, <strong>인정받은 내용과 동일하게 시공되지 않을 경우 인정서 발급이 불가</strong>할 수 있습니다. 
@@ -141,11 +181,11 @@
                 </div>
                 <div class="note">※ 일자손잡이의 경우 손잡이 봉이 800~900mm 사이에 위치하면 적합</div>
     
-    <div style="margin-top: 15px; text-align: center; border-top: 1px dashed #eee; padding-top: 15px;">
-        <img src="handle.jpg" alt="손잡이 높이 시공 예시" style="width: 100%; max-width: 500px; border-radius: 6px; border: 1px solid #ddd;">
-        <span class="diagram-caption" style="display:block; margin-top:8px; font-size:0.85rem; color:#666;">▲ 손잡이 높이 측정 기준 예시</span>
-    </div>
-</div>
+                <div style="margin-top: 15px; text-align: center; border-top: 1px dashed #eee; padding-top: 15px;">
+                    <img src="handle.jpg" alt="손잡이 높이 시공 예시" style="width: 100%; max-width: 500px; border-radius: 6px; border: 1px solid #ddd;">
+                    <span class="diagram-caption">▲ 손잡이 높이 측정 기준 예시</span>
+                </div>
+            </div>
 
             <div class="info-box">
                 <h3>방화문 개폐 유효폭 확보</h3>
@@ -158,11 +198,12 @@
                 </div>
                 <div class="note">※ 수동문 측정 기준: 문을 90도 개방 시, 손잡이 등 돌출물을 제외한 순수 통과 폭(OPEN SIZE)</div>
 
-    <div style="margin-top: 15px; text-align: center; border-top: 1px dashed #eee; padding-top: 15px;">
-        <img src="width.jpg" alt="유효폭 측정 예시" style="width: 100%; max-width: 500px; border-radius: 6px; border: 1px solid #ddd;">
-        <span class="diagram-caption" style="display:block; margin-top:8px; font-size:0.85rem; color:#666;">▲ 90도 개방 시 유효폭 측정 방법</span>
-    </div>
-</div>
+                <div style="margin-top: 15px; text-align: center; border-top: 1px dashed #eee; padding-top: 15px;">
+                    <img src="width.jpg" alt="유효폭 측정 예시" style="width: 100%; max-width: 500px; border-radius: 6px; border: 1px solid #ddd;">
+                    <span class="diagram-caption">▲ 90도 개방 시 유효폭 측정 방법</span>
+                </div>
+            </div>
+
             <div class="info-box">
                 <h3>프레임 사면(4면) 구속 시공 조건</h3>
                 <div class="content-row">
@@ -175,10 +216,11 @@
                 </div>
                 
                 <div style="margin-top: 20px; text-align: center; border-top: 1px dashed #e0e0e0; padding-top: 20px;">
-        <img src="model1.jpg" alt="프레임 사면 구속 시공 상세도" style="width: 100%; max-width: 600px; height: auto; border: 1px solid #eee; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
-        <span class="diagram-caption" style="margin-top: 12px; font-weight: 700; color: #333;">▲ 인정 내화구조 프레임 구속 시공 방법</span>
-    </div>
-</div>
+                    <img src="model1.jpg" alt="프레임 사면 구속 시공 상세도" style="width: 100%; max-width: 600px; height: auto; border: 1px solid #eee; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+                    <span class="diagram-caption">▲ 인정 내화구조 프레임 구속 시공 방법</span>
+                </div>
+            </div>
+        </div>
 
         <div class="section">
             <div class="section-title">
@@ -194,13 +236,13 @@
                     <h4>현장 가공 금지</h4>
                     <p>인정받은 제품 외 별도의 <strong>타공, 절단, 시트지 부착 불가</strong>합니다.</p>
                 </div>
-          </div>
+            </div>
 
-    <div style="margin-top: 20px; text-align: center;">
-        <img src="caution.jpg" alt="현장 시공 주의사항 예시" style="width: 100%; max-width: 600px; border-radius: 8px; border: 2px solid #ffcdd2;">
-        <span class="diagram-caption" style="display:block; margin-top:8px; font-weight:bold; color:#d32f2f;">▲ 임의 가공 및 타공 금지 사례</span>
-    </div>
-</div>
+            <div style="margin-top: 20px; text-align: center;">
+                <img src="caution.jpg" alt="현장 시공 주의사항 예시" style="width: 100%; max-width: 600px; border-radius: 8px; border: 2px solid #ffcdd2;">
+                <span class="diagram-caption" style="display:block; margin-top:8px; font-weight:bold; color:#d32f2f;">▲ 임의 가공 및 타공 금지 사례</span>
+            </div>
+        </div>
 
         <div class="section">
             <div class="section-title">
