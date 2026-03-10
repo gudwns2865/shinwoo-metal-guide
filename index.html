@@ -124,27 +124,65 @@
         }
         .pdf-btn:hover { background-color: #5a6268; }
 
-        /* ★ PDF 저장/인쇄 시 적용되는 스타일 */
-        @media print {
-            .pdf-btn, .chatbot-toggle, .chatbot-window, .main-footer {
-                display: none !important;
-            }
-            body { 
-                background-color: white; 
-                padding: 0;
-                margin: 0;
-                -webkit-print-color-adjust: exact;
-            }
-            .container {
-                box-shadow: none;
-                padding: 0;
-                margin: 0;
-                width: 100%;
-                max-width: 100%;
-                border: none;
-            }
-            .section, .info-box { break-inside: avoid; }
-        }
+/* ★ PDF 저장/인쇄 시 적용되는 스타일 (A4 문서용 최적화) */
+@media print {
+    /* 1. 용지 여백 설정 (A4 기준) */
+    @page {
+        size: A4;
+        margin: 15mm; /* 상하좌우 여백 */
+    }
+
+    /* 2. 인쇄할 때 필요 없는 버튼, 챗봇 등 숨기기 */
+    .pdf-btn, .chatbot-toggle, .chatbot-window {
+        display: none !important;
+    }
+    
+    /* 3. 배경색 강제 출력 (크롬/엣지 지원) */
+    body { 
+        background-color: white !important; 
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        margin: 0;
+        padding: 0;
+    }
+
+    /* 4. 컨테이너 여백 및 그림자 제거 (깔끔하게) */
+    .container {
+        box-shadow: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        border: none !important;
+    }
+
+    /* 5. 로고 겹침 방지 (웹에서는 absolute였지만 인쇄 시에는 정상 배치) */
+    .logo-container {
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        text-align: left !important;
+        margin-bottom: 20px !important;
+    }
+    .logo-container img {
+        max-width: 150px !important; /* 로고 크기 살짝 조정 */
+    }
+
+    /* 6. 항목들이 페이지 중간에 반으로 잘리지 않게 보호 */
+    .section, .info-box, .caution-item, img, .document-box { 
+        break-inside: avoid !important; 
+        page-break-inside: avoid !important;
+    }
+
+    /* 7. 헤더 여백 조정 */
+    header {
+        border-bottom: 3px solid #00305b !important;
+        padding-bottom: 15px !important;
+        margin-bottom: 20px !important;
+    }
+
+    h1 { margin: 10px 0 !important; font-size: 1.8rem !important; }
+}
     </style>
 </head>
 <body>
