@@ -95,6 +95,7 @@
         #chatbot-input { flex: 1; border: 1.5px solid #eee; border-radius: 12px; padding: 10px 15px; outline: none; }
         #chatbot-send { background: var(--primary-color); color: white; border: none; padding: 0 15px; border-radius: 12px; cursor: pointer; }
 
+        /* 모바일 스타일 */
         @media (max-width: 768px) {
             .container { padding: 25px 20px; }
             .logo-container { position: static; text-align: left; margin-bottom: 10px; }
@@ -104,7 +105,7 @@
             .chatbot-window { width: calc(100% - 20px); height: 80vh; bottom: 10px; right: 10px; }
         }
 
-        /* PDF 다운로드 버튼 스타일 */
+        /* PDF 다운로드 버튼 스타일 (웹 화면 전용) */
         .pdf-btn {
             background-color: #6c757d;
             color: white;
@@ -121,62 +122,123 @@
             display: flex;
             align-items: center;
             gap: 6px;
+            z-index: 10; /* 로고보다 위에 */
         }
         .pdf-btn:hover { background-color: #5a6268; }
 
-/* ★ PDF 저장/인쇄 시 적용되는 스타일 (A4 문서용 최적화) */
+/* ★★★★★ PDF 저장/인쇄 시 적용되는 최종 핵심 스타일 (공백 및 버튼 해결) ★★★★★ */
 @media print {
-    /* 전반적인 여백 축소 */
-    body {
-        margin: 0;
-        padding: 0;
-        font-size: 10pt; /* 글자 크기를 살짝 줄여 공간 확보 */
+    /* 1. 불필요한 UI 완벽 숨기기 */
+    .pdf-btn, .chatbot-toggle, #chatbot-window, .chatbot-toggle, .chatbot-badge {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
+    /* 2. 전반적인 여백 및 공백 제거 (촘촘하게 모으기) */
+    body { 
+        background-color: white !important; 
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 11pt !important; /* 글자 크기를 살짝 줄여서 공간 확보 */
     }
 
-    /* 페이지 상단 제목 부분 공백 제거 */
+    .container {
+        box-shadow: none !important;
+        padding: 10mm !important; /* A4 용지 여백 최소화 */
+        margin: 0 !important;
+        width: 100% !important;
+        max-width: none !important;
+        border: none !important;
+    }
+
+    /* 3. 헤더 및 로고 배치 정상화 */
     header {
-        padding-top: 0 !important;
+        border-bottom: 2px solid var(--primary-color) !important;
+        padding-bottom: 10px !important;
+        margin-bottom: 15px !important;
+        text-align: left !important; /* 인쇄 시 왼쪽 정렬 */
+    }
+
+    .logo-container {
+        position: relative !important; /* 웹의 absolute 해제 */
+        top: 0 !important;
+        left: 0 !important;
+        margin-bottom: 10px !important;
+    }
+    .logo-container img {
+        max-width: 140px !important; /* 로고 크기 살짝 조정 */
+    }
+
+    h1 { 
+        margin: 5px 0 !important; 
+        font-size: 1.6rem !important; 
+        text-align: center !important; 
+    }
+    
+    .subtitle {
+        padding: 10px !important;
+        margin-bottom: 10px !important;
+        font-size: 0.95rem !important;
+    }
+
+    /* 4. 섹션 및 박스 밀림 방지 (핵심!) */
+    .section { 
+        margin-bottom: 15px !important;
+        page-break-inside: avoid; /* 섹션 중간에서 페이지 잘림 방지 */
+    }
+    
+    .section-title {
+        margin-bottom: 10px !important;
+        padding: 8px 0 8px 10px !important;
+        font-size: 1.1rem !important;
+    }
+
+    .info-box { 
+        padding: 15px !important;
+        margin-bottom: 10px !important;
+        page-break-inside: avoid; /* 박스 중간에서 잘림 방지 */
+    }
+    
+    .info-box h3 {
+        font-size: 0.95rem !important;
         margin-bottom: 10px !important;
     }
 
-    h1 {
-        margin: 10px 0 !important;
-        font-size: 1.4rem !important;
-    }
-
-    /* 강제 페이지 넘김 방지 */
-    .section, .info-box {
-        page-break-before: auto !important; /* 강제 줄바꿈 해제 */
-        page-break-inside: avoid; /* 섹션 중간에서 잘리는 것만 방지 */
-        margin-bottom: 15px !important;
-        padding: 10px !important;
-    }
-
-    /* 안내문 박스 크기 조절 */
-    .notice-card {
-        margin-bottom: 15px !important;
-        padding: 10px !important;
-    }
-
-    /* 이미지 크기 최적화 (너무 커서 다음 장으로 밀리지 않게) */
+    /* 5. 이미지 크기 최적화 (너무 커서 밀리지 않게) */
     img {
-        max-height: 200px !important; /* 이미지 높이 제한 */
+        max-height: 250px !important; /* 이미지 최대 높이 제한 */
         width: auto !important;
         margin: 5px auto !important;
         display: block;
     }
 
-    /* 캡션 글자 크기 조절 */
     .diagram-caption {
         font-size: 0.8rem !important;
         margin-top: 5px !important;
     }
 
-    /* 하단 푸터(주소 부분)를 마지막 페이지 하단에 밀착 */
-    footer {
-        page-break-before: auto !important;
-        margin-top: 20px !important;
+    /* 6. 현장 주의사항 섹션 최적화 */
+    .caution-grid {
+        grid-template-columns: 1fr !important; /* 인쇄 시 1열로 배치하여 공간 절약 */
+        gap: 10px !important;
     }
+    .caution-item {
+        padding: 15px !important;
+    }
+    
+    /* 7. 마지막 페이지 하단 푸터 정리 */
+    .main-footer {
+        background: none !important;
+        color: #333 !important;
+        border-top: 2px solid var(--primary-color) !important;
+        padding: 15px 0 0 0 !important;
+        margin-top: 20px !important;
+        font-size: 0.85rem !important;
+        page-break-before: auto !important; /* 강제 줄바꿈 해제 */
+    }
+    .main-footer .company-name { color: var(--primary-color) !important; }
 }
     </style>
 </head>
@@ -203,7 +265,7 @@
                 1. 주요 시공 준수 표준
             </div>
             
-            <div class="info-box">
+            <div class="info-box notice-card">
                 <h3>방화문 손잡이(도어핸들) 설치 높이</h3>
                 <div class="content-row">
                     <span class="label">일반 현장</span>
@@ -220,7 +282,7 @@
                 </div>
             </div>
 
-            <div class="info-box">
+            <div class="info-box notice-card">
                 <h3>방화문 개폐 유효폭 확보</h3>
                 <div class="content-row">
                     <span class="label">일반 현장</span>
@@ -237,7 +299,7 @@
                 </div>
             </div>
 
-            <div class="info-box">
+            <div class="info-box notice-card">
                 <h3>프레임 사면(4면) 구속 시공 조건</h3>
                 <div class="content-row">
                     <span class="label">고정 조건</span>
@@ -282,7 +344,7 @@
                 <svg class="icon" viewBox="0 0 384 512" fill="currentColor"><path d="M64 0C28.7 0 0 28.7 0 64V448c0 35.3 28.7 64 64 64H320c35.3 0 64-28.7 64-64V160H256c-17.7 0-32-14.3-32-32V0H64zM256 0V128H384L256 0zM80 64h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H80c-8.8 0-16-7.2-16-16s7.2-16 16-16zm16 96H288c17.7 0 32 14.3 32 32v64c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32V256c0-17.7 14.3-32 32-32zm0 32v64H288V256H96zM240 416h64c8.8 0 16 7.2 16 16s-7.2 16-16 16H240c-8.8 0-16-7.2-16-16s7.2-16 16-16z"/></svg>
                 3. 인정서 요청 필수 제출 자료
             </div>
-            <div class="info-box document-box">
+            <div class="info-box document-box notice-card">
                 <p style="background-color: #fff8e1; border-left: 4px solid #ffc107; padding: 15px; font-weight: 600; color: #856404; margin-bottom: 20px;">
                     아래 자료가 모두 확인되어야 인정서 발급이 가능합니다.<br>
                     <span style="color: #d32f2f;">(계산서 발행한 사업자 이름으로 발행됨)</span>
@@ -332,7 +394,7 @@
     </div>
 
     <script>
-        // FAQ 즉각 응답 데이터
+        // FAQ 데이터 및 챗봇 스크립트는 기존과 동일
         const faqData = {
             "손잡이 높이 기준": "방화문 손잡이 설치 높이는 <strong>바닥면으로부터 800mm ~ 1,050mm</strong> 사이입니다. (장애인 편의시설은 800~900mm 준수 필수)",
             "장애인 유효폭": "장애인 편의시설 현장은 반드시 <strong>유효폭 900mm 이상</strong>을 확보해야 합니다. 이는 문틀 사이즈가 아닌, 문을 90도로 열었을 때의 순수 통과 폭을 의미합니다.",
@@ -340,17 +402,13 @@
             "시공 주의사항": "인정 시 포함된 <strong>정품 하드웨어를 임의로 변경하거나 현장에서 타공, 절단 가공을 하는 것은 엄격히 금지</strong>됩니다. 위반 시 인정서 발급이 불가합니다."
         };
 
-        // FAQ 전용 처리 함수
         function askFAQ(question) {
             const messagesContainer = document.getElementById('chatbot-messages');
-            
-            // 1. 사용자 질문 즉시 추가
             const uMsg = document.createElement('div');
             uMsg.className = 'message user-message';
             uMsg.innerHTML = question;
             messagesContainer.appendChild(uMsg);
 
-            // 2. 고정 답변 확인
             if(faqData[question]) {
                 const bMsg = document.createElement('div');
                 bMsg.className = 'message bot-message';
@@ -358,7 +416,6 @@
                 messagesContainer.appendChild(bMsg);
                 messagesContainer.scrollTop = messagesContainer.scrollHeight;
             } else {
-                // 고정 답변이 없는 경우에만 AI 서버 호출
                 const input = document.getElementById('chatbot-input');
                 input.value = question;
                 document.getElementById('chatbot-send').click();
@@ -380,7 +437,6 @@
                 const text = input.value.trim();
                 if(!text) return;
 
-                // 이미 askFAQ에서 사용자 메시지를 넣었는지 확인 (중복 방지)
                 const lastMsg = messagesContainer.lastElementChild;
                 if (!lastMsg || lastMsg.innerHTML !== text || !lastMsg.classList.contains('user-message')) {
                     const uMsg = document.createElement('div');
